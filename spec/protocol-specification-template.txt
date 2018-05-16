@@ -1,0 +1,392 @@
+
+
+
+
+                                                             B. Group 11
+                                                          IMT Atlantique
+                                                           April 6, 2017
+
+
+Group 11: c2w protocol specification proposal by Labrirhli - Benmaajouz
+                          - Rochcongar - Hizem
+
+Abstract
+
+   Sample protocol specification for the binary version of The c2w
+   Application protocol.  The goal of this protocol is the allow a
+   client to login, access to the list of film available and other users
+   to connect with .
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   1
+   2.  Packet format . . . . . . . . . . . . . . . . . . . . . . . .   1
+   3.  Example scenario  . . . . . . . . . . . . . . . . . . . . . .   2
+     3.1.  Scenario 1: Authentication  . . . . . . . . . . . . . . .   2
+     3.2.  Scenario 2: Join a movie  . . . . . . . . . . . . . . . .   3
+     3.3.  Scenario 3 : send a message . . . . . . . . . . . . . . .   4
+   4.  AuthentificationRequest . . . . . . . . . . . . . . . . . . .   4
+   5.  AuthentificationResponse  . . . . . . . . . . . . . . . . . .   5
+   6.  Message . . . . . . . . . . . . . . . . . . . . . . . . . . .   5
+   7.  MovieRequest  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   8.  Unconnect . . . . . . . . . . . . . . . . . . . . . . . . . .   6
+   9.  MovieResponse . . . . . . . . . . . . . . . . . . . . . . . .   6
+   10. Return  . . . . . . . . . . . . . . . . . . . . . . . . . . .   6
+   11. Modify  . . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+   12. ACK . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+   13. Conclusion  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   7
+
+1.  Introduction
+
+   The goal of The c2w Application protocol is to allow clients to watch
+   a movie available in the server.  Each client must know the IP
+   adresses and corresponding port number of allthe movies and the list
+   of client who are watching this movie at the same time.
+
+2.  Packet format
+
+   Describe the packet format and the headers.  For example, if you have
+   a binary header, you can use a figure like the following example
+   (where we have used the generic name "Field" for most of the fields,
+   you should use the names corresponding to your solution):
+
+
+
+Group 11                 Expires October 8, 2017                [Page 1]
+
+                                                              April 2017
+
+
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       | Type  |                                                       |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |            Trame id           |                               |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |           Lenght                  |                           |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |                                                               |
+       .                                                               .
+       .                       Message Data                            .
+       .                                                               .
+       |                                                               |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                                 Figure 1
+
+3.  Example scenario
+
+3.1.  Scenario 1: Authentication
+
+   A user is trying to connect to the server with his username, he fails
+   the first time.  The following messages are what he exchanged with
+   the server.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Group 11                 Expires October 8, 2017                [Page 2]
+
+                                                              April 2017
+
+
+       Client                                          Server
+           |                                              |
+           |             Message 1 (AuthRequest)          |
+           |--------------------------------------------->|
+           |      (the client specify his username)       |
+           |                                              |
+           |                                              |
+           |               Message 2 (Ack)                |
+           |<---------------------------------------------|
+           |          (Message acknowledged)              |
+           |                                              |
+           |                                              |
+           |               Message 3 (AuthResponse)       |
+           |<---------------------------------------------|
+           |         (Wrong username : connection refused)|
+           |                                              |
+           |                                              |
+           |              Message 4 (Ack)                 |
+           |--------------------------------------------->|
+           |         (Message acknowledged)               |
+           |                                              |
+           |                                              |
+           |            Message 5 (AuthRequest)           |
+           |--------------------------------------------->|
+           |     (the client specify his username)        |
+           |                                              |
+           |                                              |
+           |              Message 6 (Ack)                 |
+           |<---------------------------------------------|
+           |         (Message acknowledged)               |
+           |                                              |
+           |                                              |
+           |              Message 7 (AuthResponse)        |
+           |<---------------------------------------------|
+           |     (Wrong username : access granted         |
+           |       + list the films and users)            |
+           |                                              |
+           |                                              |
+           |               Message 8 (Ack)                |
+           |--------------------------------------------->|
+           |          (Message acknowledged)              |
+
+
+3.2.  Scenario 2: Join a movie
+
+   A user is entering in a movie room.  Every trames are separated by
+   ACK like in the 1st example.
+
+
+
+
+Group 11                 Expires October 8, 2017                [Page 3]
+
+                                                              April 2017
+
+
+        Client                             Server          Clients in
+                                                             the room
+           |                                 |                    |
+           |    Message 1 (MovieRequest)     |                    |
+           |-------------------------------->|                    |
+           |    (username and film chosen)   |                    |
+           |                                 |Message 2 (Modify)  |
+           |                                 |------------------->|
+           |                                 |(username of the new|
+           |                                 |     user)          |
+           |                                 |
+           |      Message 3 (MovieResponse)  |
+           |<--------------------------------|
+           |(OK + list of users in the movie |
+           |        room)                    |
+
+3.3.  Scenario 3 : send a message
+
+   A user is sending a message to users in the same room.  Every trames
+   are separated by ACK like in the 1st example.
+
+        Client                             Server          Clients in
+                                                             the room
+           |                                 |                    |
+           |    Message 1 (Message)          |                    |
+           |-------------------------------->|                    |
+           |    (username and message)       |                    |
+           |                                 |Message 2 (Message) |
+           |                                 |------------------->|
+           |                                 |(Relay by the       |
+           |                                 |     server)        |
+           |                                 |                    |
+           |                                 |                    |
+           |                                 |Message 3 (Message) |
+           |                                 |<-------------------|
+           |                                 |(username and       |
+           |                                 |     respons)       |
+           |                                 |
+           |      Message 3 (Message)        |
+           |<--------------------------------|
+           |      (Relay by the server)      |
+
+
+4.  AuthentificationRequest
+
+   Where Type is 0001 And Message data contains the binary version of
+   the user name of the client :
+
+
+
+
+Group 11                 Expires October 8, 2017                [Page 4]
+
+                                                              April 2017
+
+
+   4 bits : username lenght
+
+   X bits : USERNAME
+
+5.  AuthentificationResponse
+
+   Where Type is 0010 And Message data contains 0 if the connexion fails
+   (the server does not recognize the user name) otherwise 1 followed by
+   all the users who are in the same room and films:
+
+   1 bit : 0 or 1
+
+   The following part exists only if the last bit is 1.
+
+   8 bits : lenght of the list of films plus ip and port
+
+   8 bits : film lenght
+
+   X bits : FILM
+
+   32 bits : ip of the server film
+
+   16 bits : port of the server film
+
+   8 bits : lenght of the list user
+
+   4 bits : username lenght
+
+   N bits : USERNAME
+
+6.  Message
+
+   Where Type is 0011.  This message is used when a user want to chat
+   with other users in his room (main or movie room).  With the
+   username, the server is able to find user's room and all the users in
+   the same room.  The data part contains the username who is sending
+   the message, with the message.  Both previoused by their lenght.
+
+   4 bits : username lenght
+
+   X bits : USERNAME
+
+   12 bits : lenght of the chat message
+
+   N bits : MESSAGE
+
+
+
+
+
+
+Group 11                 Expires October 8, 2017                [Page 5]
+
+                                                              April 2017
+
+
+7.  MovieRequest
+
+   Where Type field is 0100.  A MovieResquest is sent by an user when he
+   is going to watch a movie on a server.  The server can then update
+   the user status (i.e from A to M).  The Data part contains the
+   username and the name of the movie :
+
+   4 bits : username lenght
+
+   X bits : USERNAME
+
+   8 bits : film lenght
+
+   N bits : FILM
+
+8.  Unconnect
+
+   Where Type field is 0101.  Sent by the server after the client made a
+   Return from the main room.  With this message the server warn the
+   client that he is disconnected and his session has ended.  Data field
+   is empty.
+
+9.  MovieResponse
+
+   A MovieResponse is a message sent to the client who just connected to
+   a movie room.  It contains all the users who are in the same room.
+   Its Type is 0110.  The message Data is the binary version of :
+
+   1 bit : 0 or 1
+
+   4 bits : number of users
+
+   4 bits : username lenght | Repeat these 2 parts
+
+   X bits : USERNAME | as much as there is users
+
+10.  Return
+
+   The Return message is sent when a user wants to leave his current
+   room, weither he is in a movie room or the main one.  Its Type is
+   0111.  The message Data contains the username in binary.
+
+   X bits : USERNAME
+
+
+
+
+
+
+
+
+Group 11                 Expires October 8, 2017                [Page 6]
+
+                                                              April 2017
+
+
+11.  Modify
+
+   The Modify message is sent by the server when a user changes rooms.
+   Thus alerting the other users that the client joined/left them.  Its
+   Type is 1000.  It contains 0 when the user joins the room, and 1 when
+   he leaves followed by his username in binary.
+
+   1 bit : 0 or 1
+
+   USERNAME
+
+12.  ACK
+
+   The ACK message is an aknowledgment from the server or the client
+   (and reverse) to ensure that the previous message was received
+   correctly.  Its Type is 1001.  Every message sends has a number (like
+   an id).  When the target of the message receive it, it sends back an
+   ACK with the message id and type it acknowleged.  The ACK Data
+   contains the type of the message acknowledged followed by its id.
+
+   4 bits : type of message
+
+   16 bits : id of the message
+
+13.  Conclusion
+
+   Every message is acknowledged.  The server refuses the connection at
+   first by sending an authresponse, then the user sends a correct
+   username which is accepted by the server which grants him access.
+   The Data part is empty.
+
+Author's Address
+
+   Badr Labrirhli
+   IMT Atlantique
+   655 Avenue du technopole
+   Brest  29280
+   France
+
+   Email: firstname.lastname@telecom-bretagne.eu
+
+
+
+
+
+
+
+
+
+
+
+Group 11                 Expires October 8, 2017                [Page 7]

@@ -1,0 +1,74 @@
+                
+                -------------------------------S E R V E R---------------------------------------
+
+PASSED -- c2w_test_udp_server.py --scenario one_user_login_udp_server_test 
+
+        checks the validity of the ACK and INSCRIPTION_ACCEPTEE messages sent by the server. 2 “Test passed” expected.
+
+
+
+PASSED -- c2w_test_udp_server.py --scenario one_user_login_retransmit_udp_server_test
+
+        checks the validity of the ACK and INSCRIPTION_ACCEPTEE messages sent by the server. The first and second INSCRIPTION_ACCEPTEE messages are considered as being lost. 4 “Test 		passed” expected.
+
+
+
+PASSED -- c2w_test_udp_server.py --scenario one_user_too_long_login_udp_server_test
+
+        checks the validity of the ACK and INSCRIPTION_REFUSEE messages sent by the server. 2 “Test passed” expected.
+
+
+
+PASSED -- c2w_test_udp_server.py --scenario one_user_with_space_login_udp_server_test
+
+        checks the validity of the ACK and INSCRIPTION_REFUSEE messages sent by the server. 2 “Test passed” expected.
+
+
+
+PASSED -- c2w_test_udp_server.py --scenario one_user_full_login_udp_server_test
+
+        same as one_user_login_udp_server_test plus LISTE_FILMS and LISTE_UTILISATEURS exchanges 4 “Test passed” expected.
+
+
+
+PASSED -- c2w_test_udp_server.py --scenario one_user_full_login_uphead_seq_udp_server_test
+
+        same as one_user_login_udp_server_test plus LISTE_FILMS and LISTE_UTILISATEURS exchanges. ACK with wrong (uphead) sequence number sent to the server for acknowledging the 		INSCRIPTION_ACCEPTEE and then Fast forward time 1 sec. 5 “Test passed” expected.
+
+
+
+PASSED -- c2w_test_udp_server.py --scenario one_user_chat_message_udp_server_test
+
+        same as one_user_full_login_udp_server_test plus MESSAGE_INSTANTANE and REDIR_MESSAGE_INSTANTANE exchanges 7 “Test passed” expected.
+
+
+
+PASSED -- c2w_test_udp_server.py --scenario one_user_change_room_udp_server_test
+
+        same as one_user_chat_message_udp_server_test plus JOINDRE_SALON and JOINDRE_SALON_OK exchanges 9 “Test passed” expected.
+
+
+
+            -------------------------------C L I E N T---------------------------------------
+
+
+PASSED -- c2w_test_udp_client.py --scenario one_user_login_udp_client_test
+
+        checks the validity of INSCRIPTION message sent by the client. 1 “Test passed” expected.
+
+
+PASSED -- c2w_test_udp_client.py --scenario one_user_full_login_udp_client_test
+
+        same as one_user_login_udp_client_test plus LISTE_FILMS and LISTE_UTILISATEURS exchanges. 4 “Test passed” expected.
+
+
+PASSED -- c2w_test_udp_client.py --scenario one_user_chat_message_udp_client_test
+
+        same as one_user_full_login_udp_client_test plus MESSAGE_INSTANTANE exchange. 5 “Test passed” expected.
+
+
+PASSED -- c2w_test_udp_client.py --scenario one_user_login_udp_client_reliability_test
+
+        same as one_user_login_udp_client_test but add a reliability concern (the initial INSCRIPTION message is lost). 2 “Test passed” expected.
+
+

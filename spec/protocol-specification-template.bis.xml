@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This template is for creating an Internet Draft using xml2rfc,
+     which is available here: http://xml.resource.org. -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+
+<!ENTITY RFC2629 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2629.xml">
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs), 
+     please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable Processing Instructions (PIs) that most I-Ds might want to use.
+     (Here they are set differently than their defaults in xml2rfc v1.32) -->
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space 
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- do not display copyright and other IETF-related stuff -->
+<?rfc private="(c) GROUP 11, 2017" ?>
+
+<rfc category="info" docName="draft-ietf-xml2rfc-template-05" ipr="trust200902">
+  <!-- category values: std, bcp, info, exp, and historic
+     ipr values: full3667, noModification3667, noDerivatives3667
+     you can add the attributes updates="NNNN" and obsoletes="NNNN" 
+     they will automatically be output with "(if approved)" -->
+
+  <!-- ***** FRONT MATTER ***** -->
+
+  <front>
+    <!-- The abbreviated title is used in the page header - it is only necessary if the 
+         full title is longer than 39 characters -->
+
+    <title abbrev="Abbreviated Title">Group 11: c2w protocol specification proposal
+    </title>
+
+    <!-- add 'role="editor"' below for the editors if appropriate -->
+
+    
+    <author fullname="11 Badr Labrirhli" initials="B.L."
+            surname="Labrirhli">
+      <organization>IMT Atlantique</organization>
+
+      <address>
+        <postal>
+          <street>655 Avenue du technopôle</street>
+
+          <!-- Reorder these if your country does things differently -->
+
+          <city>Brest</city>
+
+          <region></region>
+
+          <code>29280</code>
+
+          <country>France</country>
+        </postal>
+
+        
+
+        <email>firstname.lastname@telecom-bretagne.eu</email>
+
+        <!-- uri and facsimile elements may also be added -->
+      </address>
+    </author>
+
+    <date month="april" year="2017" />
+
+    <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
+         in the current day for you. If only the current year is specified, xml2rfc will fill 
+	 in the current day and month for you. If the year is not the current one, it is 
+	 necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
+	 purpose of calculating the expiry date).  With drafts it is normally sufficient to 
+	 specify just the year. -->
+
+    <keyword>c2w</keyword>
+
+    <!-- Keywords will be incorporated into HTML output
+         files in a meta tag but they have no effect on text or nroff
+         output. If you submit your draft to the RFC Editor, the
+         keywords will be used for the search engine. -->
+
+    <abstract>
+      <t>Insert an abstract: MANDATORY.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Introduction">
+      <t>Given an introduction and an overview of the protocol.</t>
+
+    </section>
+
+    <section title="Packet format">
+    <t>
+     Describe the packet format and the headers. For example, if you have a binary header,
+     you can use a figure like the following example (where we have used the generic
+     name "Field" for most of the fields, you should use the names corresponding to your solution):
+    </t>
+
+    <t>
+    <figure align="center" anchor="sample_pkt">
+	<artwork>
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    | Type  |                                                       |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |             N°trame           |                               |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |           Lenght                  |                           |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                                                               |
+    .                                                               .
+    .                       Message Data                            .
+    .                                                               .
+    |                                                               |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        </artwork></figure></t>
+    </section>
+
+    <section title="Example scenario">
+    <section title="Scenario 1: Authentication">
+    <t>
+    A user is trying to connect to the server with his username, he fails the first time. The following messages are what he exchanged with the server. 
+</t><t><figure><artwork>
+    Client                                          Server
+        |                                              |
+        |             Message 1 (AuthRequest)          |
+        |---------------------------------------------&gt;|
+        |      (the client specify his username)       |
+        |                                              |
+        |                                              |
+        |               Message 2 (Ack)                |
+        |&lt;---------------------------------------------|
+        |          (Message acknowledged)              |
+        |                                              |
+        |                                              |
+        |               Message 3 (AuthResponse)       |
+        |&lt;---------------------------------------------|
+        |         (Wrong username : connection refused)|
+        |                                              |
+        |                                              |
+        |              Message 4 (Ack)                 |
+        |---------------------------------------------&gt;|
+        |         (Message acknowledged)               | 
+        |                                              |
+        |                                              |
+        |            Message 5 (AuthRequest)           |
+        |---------------------------------------------&gt;|
+        |     (the client specify his username)        |
+        |                                              |
+        |                                              |
+        |              Message 6 (Ack)                 |
+        |&lt;---------------------------------------------|
+        |         (Message acknowledged)               |
+        |                                              |
+        |                                              |
+        |              Message 7 (AuthResponse)        |
+        |&lt;---------------------------------------------|
+        |     (Wrong username : access granted         |
+        |       + list the films and users)            |
+        |                                              |
+        |                                              |
+        |               Message 8 (Ack)                |
+        |---------------------------------------------&gt;|
+        |          (Message acknowledged)              |
+        
+	</artwork></figure></t>
+	</section><!--End of example 1-->
+
+    <section title="Scenario 2: Join a movie">
+        <t>
+        A user is entering in a movie room.  
+        Every trames are separated by ACK like in the 1st example.
+    </t><t><figure><artwork>
+     Client                             Server          Clients in 
+                                                          the room	
+        |                                 |                    |
+        |    Message 1 (MovieRequest)     |                    | 
+        |--------------------------------&gt;|                    | 
+        |    (username and film chosen)   |                    | 
+        |                                 |Message 2 (Modify)  |
+        |                                 |-------------------&gt;|
+        |                                 |(username of the new| 
+        |                                 |     user)          |
+        |                                 |
+        |      Message 3 (MovieResponse)  |
+        |&lt;--------------------------------|
+        |(OK + list of users in the movie |
+        |        room)                    |
+		</artwork>
+		</figure>
+    </t>
+    </section>
+    </section> 
+
+    <section title="AuthentificationRequest">
+    <t>
+        Where Type is 0001
+	    And Message data contains the binary version of the user name of
+	    the client :</t>
+        <t>4 bits : username lenght</t>
+        <t>X bits : USERNAME 
+    </t>
+    </section>
+
+    <section title="AuthentificationResponse">
+    <t>
+        Where Type is 0010
+		And Message data contains 0 if the connexion fails (the server 
+		does not recognize the user name) otherwise
+		1 followed by all the users who are in the same room and films:</t>
+        <t>1 bit : 0 or 1</t>
+
+        <t>The following part exists only if the last bit is 1.</t>
+
+        <t>8 bits : lenght of the list of films plus ip and port</t>
+        <t>8 bits : film lenght</t>
+        <t>X bits : FILM</t>
+        <t>32 bits : ip of the server film</t>
+        <t>16 bits : port of the server film</t>
+
+        <t>8 bits : lenght of the list user </t>
+        <t>4 bits : username lenght </t>
+        <t>N bits : USERNAME 
+    </t>
+    </section>
+
+    <section title="Message">
+    <t>
+        Where Type is 0011. This message is used when a user want to 
+        chat with other users in his room (main or movie room).
+        With the username, the server is able to find user's room and
+        all the users in the same room.
+        The data part contains the username who is sending the message, 
+        with the message. Both previoused by their lenght.</t>
+       <t> 4 bits : username lenght</t>
+       <t> X bits : USERNAME</t>
+       <t>12 bits : lenght of the chat message</t>
+        <t>N bits : MESSAGE
+    </t>
+    </section>
+
+    <section title="MovieRequest">
+    <t>
+        Where Type field is 0100. A MovieResquest is sent by an user 
+        when he is going to watch a movie on a server. 
+        The server can then update the user status (i.e from A to M). 
+        The Data part contains the username and the name of the movie :</t> 
+        <t>4 bits : username lenght</t>
+        <t>X bits : USERNAME</t>
+        <t>8 bits : film lenght</t>
+        <t>N bits : FILM 
+    </t>
+    </section>
+
+    <section title="Unconnect">
+    <t>
+         Where Type field is 0101. Sent by the server after the client
+         made a Return from the main room. With this message 
+         the server warn the client that he is disconnected and
+         his session has ended.
+        
+    </t>
+    </section>
+
+    <section title="MovieResponse">
+    <t>
+		A MovieResponse is a message sent to the client who just
+		connected to a movie room. 
+		It contains all the users who are in the same room.
+		Its Type is 0110.
+		The message Data is the binary version of : </t>
+		<t>1 bit : 0 or 1</t>
+		<t>4 bits : number of users</t>
+		<t>4 bits : username lenght | Repeat these 2 parts </t>
+		<t>X bits : USERNAME        | as much as there is users
+	</t>
+    </section>  
+  
+    <section title="Return">
+    <t>
+		The Return message is sent when a user wants to leave his 
+		current room, weither he is in a movie room or the main one.
+		Its Type is 0111.
+		The message Data contains the username in binary.</t>
+		<t>X bits : USERNAME
+    </t>
+    </section>
+
+    <section title="Modify">
+    <t>
+		The Modify message is sent by the server when a 
+		user changes rooms. Thus alerting the other users 
+		that the client joined/left them.
+		Its Type is 1000.
+		It contains 0 when the user joins the room, and 1 
+		when he leaves followed by his username in binary.</t>
+		<t>1 bit : 0 or 1</t>
+		<t>USERNAME
+	</t>
+    </section>
+
+    <section title="ACK">
+    <t>
+		The ACK message is an aknowledgment from the server or the 
+		client (and reverse) to ensure that the previous message 
+		was received correctly.
+		Its Type is 1001.
+        Every message sends has a number (like an id). When the target 
+        of the message receive it, it sends back an ACK with the 
+        message id and type it acknowleged. 
+		The ACK Data contains the type of the message acknowledged 
+		followed by its id. </t>
+		<t>4 bits : type of message</t>
+        <t>16 bits : id of the message
+    </t>
+    </section>
+
+    <section title="Conclusion">
+        <t>
+            Every message is acknowledged. The server refuses the 
+            connection at first by sending an authresponse, then the 
+            user sends a correct username which is accepted by the 
+            server which grants him access.
+            The Data part is empty. 
+        </t>
+    </section>
+  </middle>
+</rfc>

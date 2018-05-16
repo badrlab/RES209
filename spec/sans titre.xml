@@ -1,0 +1,25 @@
+<section title="Packet format">
+    <t>
+    Describe the packet format and the headers. For example, if you have a binary header,
+     you can use a figure like the following example (where we have used the generic
+     name "Field" for most of the fields, you should use the names corresponding to your solution):
+    </t>
+
+    <t>
+    <figure align="center" anchor="sample_pkt">
+    <artwork>
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    | Type  |														|
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +                       
+    |             trame id          |								|
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                             Lenght                            |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                                                               |
+    .                                                               .
+    .                       Message Data                            .
+    .                                                               .
+    |                                                               |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        </artwork></figure></t>
+    </section>
